@@ -20,10 +20,11 @@ func main() {
 	rand.Seed(time.Now().UnixNano())
 
 	n := flag.Int("n", 1000, "number of data")
+	m := flag.Int("m", 1000, "range of number")
 	flag.Parse()
 
 	for ix := 0; ix < *n; ix++ {
-		fmt.Println(rand.Intn(1000000))
+		fmt.Println(rand.Intn(*m))
 		// fmt.Println(randString())
 	}
 }

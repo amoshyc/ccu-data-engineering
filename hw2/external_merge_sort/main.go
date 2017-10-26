@@ -39,7 +39,7 @@ func externalMergeSort(inputPath, outputPath string) {
 	t2 := time.Since(start)
 
 	start = time.Now()
-	clearChunk()
+	cleanChunk()
 	t3 := time.Since(start)
 
 	fmt.Println("split:", t1)
@@ -118,7 +118,7 @@ func mergeKWay(outputPath string) {
 	}
 }
 
-func clearChunk() {
+func cleanChunk() {
 	for i := 0; i < chunkCnt; i++ {
 		chunkPath := fmt.Sprintf(chunkFmt, i)
 		err := os.Remove(chunkPath)
