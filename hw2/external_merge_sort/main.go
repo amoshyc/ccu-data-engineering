@@ -94,6 +94,7 @@ func splitAndSort(inputPath string) {
 			writer.WriteString("\n")
 		}
 		writer.Flush()
+		chunkFile.Close()
 	}
 }
 
