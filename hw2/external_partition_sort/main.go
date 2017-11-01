@@ -135,7 +135,7 @@ func sortAndConcat(outputPath string) {
 			// sort.Slice(data, func(i, j int) bool {
 			// 	return data[i] > data[j]
 			// })
-			parallelSort(data)
+			data = parallelSort(data)
 
 			for _, line := range data {
 				writer.WriteString(line)
@@ -157,14 +157,18 @@ func cleanChunk() {
 	}
 }
 
-func parallelSort(data []string) {
-	ch := make(chan []string, 1)
-	mergesort(data, ch, 0)
-	data = <-ch
+func parallelSort(data []string) []string {
+	in := make(chan []string, 1)
+	out := make(chan []string, 1)
+	go mergesort(in, out, 0)
+	in <- data
+	return <-out
 }
 
-func mergesort(data []string, out chan []string, dep int) {
-	if dep >= 3 {
+func mergesort(in chan []string, out chan []string, dep int) {
+	data := <-in
+
+	if dep >= 5 {
 		sort.Slice(data, func(i, j int) bool {
 			return data[i] > data[j]
 		})
@@ -173,29 +177,34 @@ func mergesort(data []string, out chan []string, dep int) {
 	}
 
 	N := len(data)
+	in1 := make(chan []string, 1)
+	in2 := make(chan []string, 1)
 	res1 := make(chan []string, 1)
 	res2 := make(chan []string, 1)
-	go mergesort(data[:N/2], res1, dep+1)
-	go mergesort(data[N/2:], res2, dep+1)
+	go mergesort(in1, res1, dep+1)
+	go mergesort(in2, res2, dep+1)
+	in1 <- data[:N/2]
+	in2 <- data[N/2:]
 
 	l, r := <-res1, <-res2
 	i, j := 0, 0
-	for ix := range data {
+	res := make([]string, N)
+	for ix := range res {
 		switch {
 		case i == len(l):
-			data[ix] = r[j]
+			res[ix] = r[j]
 			j++
 		case j == len(r):
-			data[ix] = l[i]
+			res[ix] = l[i]
 			i++
 		case l[i] > r[j]:
-			data[ix] = l[i]
+			res[ix] = l[i]
 			i++
 		default:
-			data[ix] = r[j]
+			res[ix] = r[j]
 			j++
 		}
 	}
 
-	out <- data
+	out <- res
 }

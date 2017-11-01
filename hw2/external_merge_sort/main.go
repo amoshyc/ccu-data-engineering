@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"os"
 	"path"
-	"sort"
 	"time"
 )
 
@@ -80,7 +79,7 @@ func splitAndSort(inputPath string) {
 		// sort.Slice(chunk, func(i, j int) bool {
 		// 	return chunk[i] > chunk[j]
 		// })
-		parallelSort(chunk)
+		chunk = parallelSort(chunk)
 
 		// save chunk
 		chunkPath := fmt.Sprintf(chunkFmt, ix)
@@ -129,47 +128,12 @@ func cleanChunk() {
 	}
 }
 
-func parallelSort(data []string) {
-	ch := make(chan []string, 1)
-	mergesort(data, ch, 0)
-	data = <-ch
+func parallelSort(data []string) []string {
+
 }
 
-func mergesort(data []string, out chan []string, dep int) {
-	if dep >= 3 {
-		sort.Slice(data, func(i, j int) bool {
-			return data[i] > data[j]
-		})
-		out <- data
-		return
-	}
+func mergeSort() {
 
-	N := len(data)
-	res1 := make(chan []string, 1)
-	res2 := make(chan []string, 1)
-	go mergesort(data[:N/2], res1, dep+1)
-	go mergesort(data[N/2:], res2, dep+1)
-
-	l, r := <-res1, <-res2
-	i, j := 0, 0
-	for ix := range data {
-		switch {
-		case i == len(l):
-			data[ix] = r[j]
-			j++
-		case j == len(r):
-			data[ix] = l[i]
-			i++
-		case l[i] > r[j]:
-			data[ix] = l[i]
-			i++
-		default:
-			data[ix] = r[j]
-			j++
-		}
-	}
-
-	out <- data
 }
 
 type winnerTree struct {

@@ -1,9 +1,12 @@
 package main
 
 import (
+	"bufio"
 	"flag"
 	"fmt"
 	"math/rand"
+	"os"
+	"strconv"
 	"time"
 )
 
@@ -16,15 +19,31 @@ func randString() string {
 	return string(res)
 }
 
+func generate(outputPath string, n int) {
+	fout, err := os.Create(outputPath + "." + strconv.Itoa(n))
+	if err != nil {
+		panic(err)
+	}
+	defer fout.Close()
+	writer := bufio.NewWriter(fout)
+	defer writer.Flush()
+
+	for i := 0; i < (1 << uint(n)); i++ {
+		writer.WriteString(string(rand.Intn(1000000)))
+		writer.WriteString("\n")
+	}
+}
+
 func main() {
 	rand.Seed(time.Now().UnixNano())
 
-	n := flag.Int("n", 1000, "number of data")
-	m := flag.Int("m", 1000, "range of number")
+	out := flag.String("o", "/tmp/amoshyc/in", "output location")
 	flag.Parse()
 
-	for ix := 0; ix < *n; ix++ {
-		fmt.Println(rand.Intn(*m))
-		// fmt.Println(randString())
+	for i := 20; i < 30; i += 2 {
+		fmt.Print(i, ": ")
+		startTime := time.Now()
+		generate(*out, i)
+		fmt.Println(time.Since(startTime))
 	}
 }
