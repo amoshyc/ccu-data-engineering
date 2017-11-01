@@ -7,6 +7,7 @@ import (
 	"os"
 	"path"
 	"sort"
+	"sync"
 	"time"
 )
 
@@ -158,53 +159,55 @@ func cleanChunk() {
 }
 
 func parallelSort(data []string) []string {
-	in := make(chan []string, 1)
-	out := make(chan []string, 1)
-	go mergesort(in, out, 0)
-	in <- data
-	return <-out
+	res := make([]string, len(data))
+	mergeSort(data, res, 0, len(data), 0)
+	return res
 }
 
-func mergesort(in chan []string, out chan []string, dep int) {
-	data := <-in
-
-	if dep >= 5 {
-		sort.Slice(data, func(i, j int) bool {
-			return data[i] > data[j]
+func mergeSort(data []string, res []string, lb, ub int, dep int) {
+	if dep >= 4 {
+		sort.Slice(data[lb:ub], func(i, j int) bool {
+			return data[lb+i] > data[lb+j]
 		})
-		out <- data
+		for i := lb; i < ub; i++ {
+			res[i] = data[i]
+		}
 		return
 	}
 
-	N := len(data)
-	in1 := make(chan []string, 1)
-	in2 := make(chan []string, 1)
-	res1 := make(chan []string, 1)
-	res2 := make(chan []string, 1)
-	go mergesort(in1, res1, dep+1)
-	go mergesort(in2, res2, dep+1)
-	in1 <- data[:N/2]
-	in2 <- data[N/2:]
+	pv := (lb + ub) / 2
+	var wg sync.WaitGroup
+	wg.Add(2)
+	go func() {
+		mergeSort(data, res, lb, pv, dep+1)
+		wg.Done()
+	}()
+	go func() {
+		mergeSort(data, res, pv, ub, dep+1)
+		wg.Done()
+	}()
+	wg.Wait()
 
-	l, r := <-res1, <-res2
-	i, j := 0, 0
-	res := make([]string, N)
-	for ix := range res {
+	nl, nr := pv-lb, ub-pv
+	l, r := 0, 0
+	for i := lb; i < ub; i++ {
 		switch {
-		case i == len(l):
-			res[ix] = r[j]
-			j++
-		case j == len(r):
-			res[ix] = l[i]
-			i++
-		case l[i] > r[j]:
-			res[ix] = l[i]
-			i++
+		case r == nr:
+			res[i] = data[lb+l]
+			l++
+		case l == nl:
+			res[i] = data[pv+r]
+			r++
+		case data[lb+l] > data[pv+r]:
+			res[i] = data[lb+l]
+			l++
 		default:
-			res[ix] = r[j]
-			j++
+			res[i] = data[pv+r]
+			r++
 		}
 	}
 
-	out <- res
+	for i := lb; i < ub; i++ {
+		data[i] = res[i]
+	}
 }

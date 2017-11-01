@@ -6,6 +6,8 @@ import (
 	"fmt"
 	"os"
 	"path"
+	"sort"
+	"sync"
 	"time"
 )
 
@@ -76,10 +78,10 @@ func splitAndSort(inputPath string) {
 			}
 		}
 
-		// sort.Slice(chunk, func(i, j int) bool {
-		// 	return chunk[i] > chunk[j]
-		// })
-		chunk = parallelSort(chunk)
+		sort.Slice(chunk, func(i, j int) bool {
+			return chunk[i] > chunk[j]
+		})
+		// chunk = parallelSort(chunk)
 
 		// save chunk
 		chunkPath := fmt.Sprintf(chunkFmt, ix)
@@ -94,6 +96,8 @@ func splitAndSort(inputPath string) {
 		}
 		writer.Flush()
 		chunkFile.Close()
+
+		fmt.Println(chunkPath, " done")
 	}
 }
 
@@ -129,11 +133,57 @@ func cleanChunk() {
 }
 
 func parallelSort(data []string) []string {
-
+	res := make([]string, len(data))
+	mergeSort(data, res, 0, len(data), 0)
+	return res
 }
 
-func mergeSort() {
+func mergeSort(data []string, res []string, lb, ub int, dep int) {
+	if dep >= 4 {
+		sort.Slice(data[lb:ub], func(i, j int) bool {
+			return data[lb+i] > data[lb+j]
+		})
+		for i := lb; i < ub; i++ {
+			res[i] = data[i]
+		}
+		return
+	}
 
+	pv := (lb + ub) / 2
+	var wg sync.WaitGroup
+	wg.Add(2)
+	go func() {
+		mergeSort(data, res, lb, pv, dep+1)
+		wg.Done()
+	}()
+	go func() {
+		mergeSort(data, res, pv, ub, dep+1)
+		wg.Done()
+	}()
+	wg.Wait()
+
+	nl, nr := pv-lb, ub-pv
+	l, r := 0, 0
+	for i := lb; i < ub; i++ {
+		switch {
+		case r == nr:
+			res[i] = data[lb+l]
+			l++
+		case l == nl:
+			res[i] = data[pv+r]
+			r++
+		case data[lb+l] > data[pv+r]:
+			res[i] = data[lb+l]
+			l++
+		default:
+			res[i] = data[pv+r]
+			r++
+		}
+	}
+
+	for i := lb; i < ub; i++ {
+		data[i] = res[i]
+	}
 }
 
 type winnerTree struct {
