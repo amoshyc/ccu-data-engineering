@@ -60,13 +60,10 @@ func parallelSort(data []string) []string {
 }
 
 func mergeSort(data []string, res []string, lb, ub int, dep int) {
-	if dep >= 4 {
+	if dep >= 5 {
 		sort.Slice(data[lb:ub], func(i, j int) bool {
 			return data[lb+i] > data[lb+j]
 		})
-		for i := lb; i < ub; i++ {
-			res[i] = data[i]
-		}
 		return
 	}
 
