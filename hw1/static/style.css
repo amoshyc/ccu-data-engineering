@@ -1,0 +1,146 @@
+@import url('https://fonts.googleapis.com/css?family=Bitter');
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #fafafa;
+}
+
+#layout {
+    padding: 0px 8px;
+}
+
+#layout > .mdl-cell form {
+    margin-bottom: 0px;
+}
+
+#layout .mdl-textfield {
+    width: 100%;
+}
+
+#input1, #input2, #output {
+    resize: none;
+    height: 50vh;
+    width: 100%;
+    padding: 10px;
+    font-size: 18px;
+    font-family: 'Bitter', serif;
+    line-height: 130%;
+}
+
+#input1,
+#input2 {
+    background-color: white;
+    border: 0.8px solid #ccc;
+}
+
+#output {
+    overflow-y: auto;
+    color: #333;
+    background-color: #f4f4f4;
+    border: none;
+}
+
+#output > #mark, #output > #file {
+    display: none;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+#label1,
+#label2 {
+    font-size: 16px;
+    font-family: 'Bitter', serif;
+    line-height: 140%;
+    color: #777;
+}
+
+#info {
+    display: flex;
+    margin-top: 15px;
+    border-top: 1px solid #ddd;
+    padding-top: 15px;
+    font-family: 'Bitter', serif;
+    line-height: 140%;
+    color: #777;
+}
+
+#info > #me {
+    margin-top: 8px;
+    margin-right: 8px;
+    float: left;
+    width: 50px;
+    height: 50px;
+    border-radius: 25px;
+}
+
+#info > span {
+    float: right;
+    color: black;
+    font-size: 14px;
+    line-height: 200%;
+}
+
+#info > span > a {
+    color: #777;
+    font-size: 12px;
+    line-height: 130%;
+    text-decoration: none;
+}
+#info > span > a:hover {
+    text-decoration: underline;
+}
+
+#fab {
+    position: fixed;
+    right: 30px;
+    bottom: 30px;
+}
+
+#btn-mark,
+#btn-stat,
+#btn-file {
+    font-size: 16px;
+    color: #777;
+}
+
+#panel {
+    padding: 0px;
+}
+
+#search, #view {
+    margin: 0px;
+    width: 250px;
+}
+
+#search p, #view p {
+    margin-bottom: 10px;
+    font-size: 16px;
+    font-family: 'Bitter', serif;
+    line-height: 140%;
+    color: #333;
+}
+
+#search #switches {
+    margin-left: 30px;
+    font-size: 16px;
+    font-family: 'Bitter', serif;
+    line-height: 150%;
+    color: #555;
+}
+
+#search #switches > label {
+    margin-bottom: 10px;
+}
+
+#search #time {
+    margin-left: 30px;
+    font-size: 28px;
+    font-family: 'Bitter', serif;
+}

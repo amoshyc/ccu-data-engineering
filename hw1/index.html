@@ -1,0 +1,146 @@
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <title>資料工程：作業一</title>
+
+    <link rel="shortcut icon" type="image/png" href="static/me.jpg" />
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.blue-orange.min.css" />
+    <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+
+    <link rel="stylesheet" href="static/style.css" />
+    <script defer src="https://code.jquery.com/jquery-3.2.1.js"></script>
+    <script defer src="static/script.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+</head>
+
+<body>
+    <div id="layout" class="mdl-grid">
+        <div class="mdl-cell mdl-cell--3-col">
+            <form action='#'>
+                <div class="mdl-textfield mdl-js-textfield">
+                    <textarea id="input1" class="mdl-textfield__input" type="text">
+                    </textarea>
+                    <label class="mdl-textfield__label" for="input"></label>
+                </div>
+            </form>
+
+            <p id="label1">
+                &nbsp;&nbsp;Type in <span style="color: #222; font-weight: bold">terms</span>, one at each line, or an absolute
+                system path to the terms file. e.g.
+                <br>
+                <span style="color: #222; margin-left: 15px">Mars</span><br>
+                <span style="color: #222; margin-left: 15px">human</span><br>
+                <span style="color: #222; margin-left: 15px">Wiki</span><br>
+                <span style="color: #222; margin-left: 15px">hooman</span><br> or
+                <br>
+                <span style="color: #222; margin-left: 15px">~/workspace/terms.txt</span>
+            </p>
+        </div>
+        <div class="mdl-cell mdl-cell--3-col">
+            <form action='#'>
+                <div class="mdl-textfield mdl-js-textfield">
+                    <textarea id="input2" class="mdl-textfield__input" type="text">
+                    </textarea>
+                    <label class="mdl-textfield__label" for="input"></label>
+                </div>
+            </form>
+
+            <p id="label2">
+                &nbsp;&nbsp;Type in <span style="color: #222; font-weight: bold">text</span>, or an absolute system path
+                to the text file. e.g.
+                <br>
+                <span style="color: #222; margin-left: 15px">
+                    Maybe there'll be a day of national mourning for me, 
+                    and my Wikipedia page will say, "Mark Watney is the only human being to have died on Mars." <br>
+                </span> or
+                <br>
+                <span style="color: #222; margin-left: 15px">
+                    ~/workspace/text.txt
+                </span>
+            </p>
+        </div>
+        <div class="mdl-cell mdl-cell--6-col">
+            <div class="mdl-textfield mdl-js-textfield">
+                <div id="output">
+                    <canvas id="stat"></canvas>
+                    <div id="mark"></div>
+                    <div id="file"></div>
+                </div>
+            </div>
+
+            <div id="panel" class="mdl-grid">
+                <div id="search" class="mdl-cell">
+                    <p>Search Setting</p>
+
+                    <div id="switches">
+                        <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="switch-1">
+                            <input type="checkbox" id="switch-1" class="mdl-switch__input" >
+                            <span class="mdl-switch__label">Accurate Search</span>
+                        </label>
+                        <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="switch-2">
+                            <input type="checkbox" id="switch-2" class="mdl-switch__input" >
+                            <span class="mdl-switch__label">Use Go program</span>
+                        </label>
+                        <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="switch-3">
+                            <input type="checkbox" id="switch-3" class="mdl-switch__input" >
+                            <span class="mdl-switch__label">Concurrency</span>
+                        </label>
+                    </div>
+
+                    <p>Time</p>
+                    <p id="time"></p>
+                </div>
+
+                <div id="view" classes="mdl-cell mdl-cell--3-col">
+                    <p>View</p>
+                    <div>
+                        <button id="btn-stat" class="mdl-button mdl-js-button">
+                            <i class="material-icons">equalizer</i>
+                        </button>
+                        <div class="mdl-tooltip" data-mdl-for="btn-stat">
+                            View<br>Statistics
+                        </div>
+
+                        <button id="btn-mark" class="mdl-button mdl-js-button">
+                            <i class="material-icons">highlight</i>
+                        </button>
+                        <div class="mdl-tooltip" data-mdl-for="btn-mark">
+                            View<br>Highlight
+                        </div>
+
+                        <button id="btn-file" class="mdl-button mdl-js-button">
+                            <i class="material-icons">info</i>
+                        </button>
+                        <div class="mdl-tooltip" data-mdl-for="btn-file">
+                            View<br>Output File Path
+                        </div>
+                    </div>
+
+                    <div id="info">
+                        <img id="me" src="static/me.jpg">
+                        <span>
+                            Yu-Cheng Huang<br>
+                            <a target="_blank" href="https://amoshyc.github.io/blog/">
+                                https://amoshyc.github.io/blog/
+                            </a><br>
+                            <a target="_blank" href="https://github.com/amoshyc">
+                                https://github.com/amoshyc
+                            </a>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <button id="fab" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored mdl-shadow--8dp">
+        <i class="material-icons">search</i>
+    </button>
+</body>
+
+</html>
