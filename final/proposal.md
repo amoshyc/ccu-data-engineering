@@ -14,7 +14,7 @@
 
 ## 題目 2: 利用 GAN 生成 Haiku
 
-題目發想來自於昨天（12/2），霍金為了慶祝 FB 追蹤人數來到 4,000,000 人，[po 了一篇文](https://www.facebook.com/stephenhawking/posts/1600494156704342)請大家以 Science 為題創作 haiku（徘句），並從中選出一人贈送他的著作 <時間簡史>。英文的徘句即為三個句子，音節數分別為 5-7-5，例如:
+題目發想來自於昨天（12/2），霍金為了慶祝 FB 追蹤人數來到 4,000,000 人，[po 了一篇文](https://www.facebook.com/stephenhawking/posts/1600494156704342)請大家以 Science 為題創作 haiku（俳句），並從中選出一人贈送他的著作 <時間簡史>。英文的俳句即為三個句子，音節數分別為 5-7-5，例如:
 
 ```
 Stars, light-years away
