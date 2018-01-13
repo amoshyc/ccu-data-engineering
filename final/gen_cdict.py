@@ -8,6 +8,7 @@ symbol_regex = re.compile(r'[，；．˙]', re.UNICODE)
 change_regex = re.compile(r'[\(（][變又語讀](.*)', re.UNICODE)
 bracket_regex = re.compile(r'[\(（](.*)[\)）]', re.UNICODE)
 
+
 def process_name(name):
     if '.gif' in name:
         return None
@@ -15,6 +16,7 @@ def process_name(name):
     name = re.sub(symbol_regex, '', name)
     name = re.sub(bracket_regex, '', name)
     return name
+
 
 def process_pron(pron):
     pron = pron.replace('　', ' ')
@@ -30,6 +32,7 @@ def process_pron(pron):
         else:
             res.append(token)
     return res
+
 
 df1 = pd.read_excel('data/cdict1.xls')[['字詞名', '注音一式']]
 df2 = pd.read_excel('data/cdict2.xls')[['字詞名', '注音一式']]
@@ -54,7 +57,7 @@ with tqdm(ascii=True, total=len(df)) as pbar:
 
         if new_name not in d:
             d[new_name] = new_pron
-        
+
         pbar.update()
 
 with open('data/dict.pkl', 'wb') as f:
