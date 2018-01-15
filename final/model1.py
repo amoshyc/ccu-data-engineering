@@ -14,6 +14,9 @@ with open('data/log_pb.pkl', 'rb') as f:
 with open('data/freq.pkl', 'rb') as f:
     freq = pickle.load(f)
 
+with open('data/rev.pkl', 'rb') as f:
+    rev = pickle.load(f)
+
 
 def split2keys(inp):
     return [inp[i:i + 2] for i in range(0, len(inp), 2)]
@@ -53,8 +56,13 @@ def find_max_prob(keys, n_cand=10):
 
 
 def query_keys(inp):
-    print('query:', inp)
-    if inp in table:
+    if inp[0] == 'r':
+        inp = inp[1:]
+        if inp in rev:
+            return rev[inp]
+        else:
+            return ''.join(rev[c] for c in inp)
+    elif inp in table:
         res = table[inp]
         res.sort(key=lambda x: -freq[x])
         res = res[:min(10, len(res))]

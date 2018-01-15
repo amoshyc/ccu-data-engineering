@@ -6,8 +6,9 @@ from copy import copy
 from pprint import pprint
 from collections import defaultdict
 
-with open('data/table.pkl', 'rb') as f:
-    table = pickle.load(f)
+
+with open('data/rev.pkl', 'rb') as f:
+    rev = pickle.load(f)
 
 with open('data/small_table.pkl', 'rb') as f:
     cands = pickle.load(f)
@@ -33,7 +34,7 @@ def build_graph(keys):
         nxt = set()
 
         for u in cur:
-            for c in cands[k][:5]:
+            for c in cands[k][:30]:
                 if u == '$' or (u + c) not in pb2:
                     word = c
                     pb = pb1[word]
@@ -47,26 +48,18 @@ def build_graph(keys):
         cur = list(nxt)
         print(cur)
 
-    pprint(g)
-    # print(len(g))
+    for u in cur:
+        g[u].append((T, 0.0))
+
+    # pprint(g)
+    print(len(g))
     return g
 
 
 def longest_path(g):
-    # detect cycles
-    # vis = defaultdict(bool)
-    # S = '$'
-    # def dfs(u, p):
-    #     for v, _ in g[u]:
-    #         if vis[v]:
-    #             return True
-    #         else:
-    #             dfs(v, u)
-    #     return False
-    # print(dfs('$', ''))
-
     dis = defaultdict(lambda: int(-1e9))
     prev = defaultdict(lambda: '$')
+    name = dict()
     pq = list()
 
     S = '$'
@@ -84,31 +77,38 @@ def longest_path(g):
                 prev[v] = u
                 heapq.heappush(pq, (dis[v], v))
 
-    u = max(dis)
-
+    u = prev['^']
+    res = list()
     while u != '$':
-        print(u)
+        res.append(u)
         u = prev[u]
 
-    return ''
+    return ''.join(res[::-1])
 
 
 def query_keys(inp):
-    keys = split2keys(inp)
-    g = build_graph(keys)
-    res = longest_path(g)
-    return res
+    if inp[0] == 'r':
+        inp = inp[1:]
+        return ''.join(rev[c] for c in inp)
+    else:
+        keys = split2keys(inp)
+        g = build_graph(keys)
+        res = longest_path(g)
+        return res
 
 
-print(query_keys('ㄊ1ㄑ4ㄅ4ㄘ4'))
+# print(query_keys('ㄊ1ㄑ4ㄅ4ㄘ4'))
+# print(query_keys('ㄓ1ㄨ2ㄕ1ㄖ4ㄈ3'))
+# print(query_keys('ㄌ2ㄙ3ㄕ3ㄒ2'))
+# print(query_keys('r離散數學'))
 
-# while True:
-#     keys = input('> ')
-#     if keys == '':
-#         continue
-#     if keys == 'q':
-#         break
-#     start_time = time.time()
-#     print(query_keys(keys))
-#     end_time = time.time()
-#     print('Time used: {:.1f}s'.format(end_time - start_time))
+while True:
+    keys = input('> ')
+    if keys == '':
+        continue
+    if keys == 'q':
+        break
+    start_time = time.time()
+    print(query_keys(keys))
+    end_time = time.time()
+    print('Time used: {:.1f}s'.format(end_time - start_time))

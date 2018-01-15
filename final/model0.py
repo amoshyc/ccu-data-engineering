@@ -37,14 +37,5 @@ def interactive():
         print(query_keys(keys))
 
 
-def from_files():
-    while True:
-        try:
-            keys = input()
-        except:
-            break
-        print(keys)
-
-
 if __name__ == '__main__':
     interactive()
