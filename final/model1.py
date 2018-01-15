@@ -47,7 +47,7 @@ def find_max_prob(keys, n_cand=10):
 
     dfs(0, 0.0)
 
-    pprint(candidates)
+    pprint(sorted(candidates))
 
     return ''.join(candidates[0][1])
 
