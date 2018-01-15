@@ -34,7 +34,7 @@ def build_graph(keys):
         nxt = set()
 
         for u in cur:
-            for c in cands[k][:30]:
+            for c in cands[k][:50]:
                 if u == '$' or (u + c) not in pb2:
                     word = c
                     pb = pb1[word]
